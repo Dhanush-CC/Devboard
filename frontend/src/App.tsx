@@ -2,7 +2,8 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import Home from './pages/HomePage';
 import Login from './pages/LoginPage';
-import Dashboard from './pages/Dashboard'; // <-- Import the real Dashboard
+import Dashboard from './pages/Dashboard';
+import SavedProfiles from './pages/SavedProfiles'; // <-- Import the new page
 
 function App() {
   return (
@@ -14,7 +15,8 @@ function App() {
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/login" element={<Login />} />
-            <Route path="/user/:username" element={<Dashboard />} /> {/* <-- Use it here */}
+            <Route path="/user/:username" element={<Dashboard />} />
+            <Route path="/saved" element={<SavedProfiles />} /> {/* <-- Add route */}
           </Routes>
         </main>
       </div>

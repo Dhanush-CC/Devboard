@@ -8,12 +8,11 @@ const saveProfile = async (req, res) => {
       return res.status(400).json({ message: 'Username is required' });
     }
 
-    // Find the user and push the new username (avoiding duplicates)
     const updatedUser = await User.findByIdAndUpdate(
       req.user.userId,
       { $addToSet: { savedProfiles: username.toLowerCase() } },
-      { new: true }
-    ).select('-password'); // Exclude password from the response
+      { returnDocument: 'after' } // FIX: Replaced { new: true } with the modern syntax
+    ).select('-password'); 
 
     res.json({ message: 'Profile saved successfully', user: updatedUser });
   } catch (error) {
