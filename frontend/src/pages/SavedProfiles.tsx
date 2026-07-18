@@ -21,7 +21,7 @@ export default function SavedProfiles() {
       </div>
 
       {savedProfiles.length === 0 ? (
-        <div className="text-center py-20 bg-white dark:bg-gray-800 rounded-xl border border-gray-100 dark:border-gray-700">
+        <div className="text-center py-20 bg-white dark:bg-gray-800 rounded-xl border border-gray-100 dark:border-gray-700 shadow-sm">
           <Bookmark className="w-12 h-12 text-gray-300 dark:text-gray-600 mx-auto mb-4" />
           <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-2">No profiles saved yet</h2>
           <p className="text-gray-500 dark:text-gray-400 mb-6">Search for a developer and click "Save Profile" to bookmark them here.</p>
@@ -38,7 +38,7 @@ export default function SavedProfiles() {
             <Link 
               key={index}
               to={`/user/${username}`}
-              className="group flex items-center justify-between p-4 bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 hover:border-blue-500 dark:hover:border-blue-500 hover:shadow-md transition-all"
+              className="group flex items-center justify-between p-4 bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 hover:border-blue-500 dark:hover:border-blue-500 shadow-sm hover:shadow-md transition-all"
             >
               <div className="flex items-center gap-3">
                 <div className="p-2 bg-gray-100 dark:bg-gray-700 rounded-full group-hover:bg-blue-50 dark:group-hover:bg-blue-900/30 transition-colors">

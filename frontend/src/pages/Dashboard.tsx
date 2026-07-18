@@ -101,11 +101,14 @@ export default function Dashboard() {
     
     setIsSaving(true);
     try {
-      const res = await api.post('/user/save-profile', { username });
+      // Dynamically select the endpoint based on current state
+      const endpoint = isAlreadySaved ? '/user/remove-profile' : '/user/save-profile';
+      
+      const res = await api.post(endpoint, { username });
       // Update global context so the button UI changes instantly across the app
       login(res.data.user, localStorage.getItem('token') || '');
     } catch (err) {
-      console.error("Failed to save profile", err);
+      console.error("Failed to toggle profile save state", err);
     } finally {
       setIsSaving(false);
     }
@@ -156,19 +159,27 @@ export default function Dashboard() {
               @{profile.login}
             </a>
 
-            {/* Save Profile Button */}
+            {/* Dynamic Save / Remove Button */}
             {isAuthenticated && (
               <button 
                 onClick={handleSaveProfile}
-                disabled={isAlreadySaved || isSaving}
-                className={`mb-4 flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
+                disabled={isSaving}
+                className={`group mb-4 flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
                   isAlreadySaved 
-                    ? 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400' 
+                    ? 'bg-green-100 text-green-700 hover:bg-red-100 hover:text-red-700 dark:bg-green-900/30 dark:text-green-400 dark:hover:bg-red-900/30 dark:hover:text-red-400' 
                     : 'bg-gray-100 hover:bg-gray-200 text-gray-700 dark:bg-gray-700 dark:hover:bg-gray-600 dark:text-gray-200'
                 }`}
               >
                 <Bookmark className={`w-4 h-4 ${isAlreadySaved ? 'fill-current' : ''}`} />
-                {isSaving ? 'Saving...' : isAlreadySaved ? 'Saved to Favorites' : 'Save Profile'}
+                {isSaving 
+                  ? 'Processing...' 
+                  : isAlreadySaved 
+                    ? <span className="group-hover:hidden">Saved to Favorites</span> 
+                    : 'Save Profile'
+                }
+                {isAlreadySaved && !isSaving && (
+                  <span className="hidden group-hover:inline">Remove Profile</span>
+                )}
               </button>
             )}
 
