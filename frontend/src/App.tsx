@@ -3,7 +3,8 @@ import Navbar from './components/Navbar';
 import Home from './pages/HomePage';
 import Login from './pages/LoginPage';
 import Dashboard from './pages/Dashboard';
-import SavedProfiles from './pages/SavedProfiles'; // <-- Add this import
+import SavedProfiles from './pages/SavedProfiles';
+import Compare from './pages/ComparePage'; // 
 
 function App() {
   return (
@@ -16,7 +17,8 @@ function App() {
             <Route path="/" element={<Home />} />
             <Route path="/login" element={<Login />} />
             <Route path="/user/:username" element={<Dashboard />} />
-            <Route path="/saved" element={<SavedProfiles />} /> {/* <-- Add this route */}
+            <Route path="/saved" element={<SavedProfiles />} />
+            <Route path="/compare" element={<Compare />} /> 
           </Routes>
         </main>
       </div>
