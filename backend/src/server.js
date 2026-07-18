@@ -5,8 +5,8 @@ const connectDB = require('./config/db');
 
 // Import Routes
 const authRoutes = require('./routes/authRoutes');
-// const githubRoutes = require('./routes/githubRoutes'); // Uncomment as you build them
-// const aiRoutes = require('./routes/aiRoutes'); 
+const githubRoutes = require('./routes/githubRoutes'); 
+const aiRoutes = require('./routes/aiRoutes'); 
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -17,8 +17,8 @@ app.use(express.json());
 
 // Mount Routes
 app.use('/api/auth', authRoutes);
-// app.use('/api/github', githubRoutes);
-// app.use('/api/ai', aiRoutes);
+app.use('/api/github', githubRoutes);
+app.use('/api/ai', aiRoutes);
 
 // Start Server
 const startServer = async () => {
