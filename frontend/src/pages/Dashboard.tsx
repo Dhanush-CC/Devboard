@@ -1,7 +1,11 @@
 import { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { api } from '../services/api';
-import { Loader2, Users, BookMarked, MapPin, Building2, Link as LinkIcon, Sparkles, ArrowLeft } from 'lucide-react';
+import { useAuth } from '../context/AuthContext';
+import { 
+  Loader2, Users, BookMarked, MapPin, Building2, 
+  Link as LinkIcon, Sparkles, ArrowLeft, Bookmark 
+} from 'lucide-react';
 import { PieChart, Pie, Cell, Tooltip, ResponsiveContainer } from 'recharts';
 
 interface ProfileData {
@@ -31,6 +35,7 @@ const COLORS = ['#3b82f6', '#10b981', '#f59e0b', '#ef4444', '#8b5cf6', '#ec4899'
 
 export default function Dashboard() {
   const { username } = useParams<{ username: string }>();
+  const { user, isAuthenticated, login } = useAuth();
   
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
@@ -42,12 +47,16 @@ export default function Dashboard() {
   const [aiInsight, setAiInsight] = useState('');
   const [aiLoading, setAiLoading] = useState(false);
   const [hasRequestedAi, setHasRequestedAi] = useState(false);
+  
+  const [isSaving, setIsSaving] = useState(false);
+
+  // Check if the current profile is already in the user's saved list
+  const isAlreadySaved = user?.savedProfiles?.includes(username?.toLowerCase() || '');
 
   useEffect(() => {
     const fetchGitHubData = async () => {
       setLoading(true);
       setError('');
-      // Reset AI states on new user search
       setAiInsight('');
       setHasRequestedAi(false);
       
@@ -81,6 +90,24 @@ export default function Dashboard() {
       setAiInsight("AI insight generation failed or is unavailable.");
     } finally {
       setAiLoading(false);
+    }
+  };
+
+  const handleSaveProfile = async () => {
+    if (!isAuthenticated) {
+      alert("Please log in to save profiles!");
+      return;
+    }
+    
+    setIsSaving(true);
+    try {
+      const res = await api.post('/user/save-profile', { username });
+      // Update global context so the button UI changes instantly across the app
+      login(res.data.user, localStorage.getItem('token') || '');
+    } catch (err) {
+      console.error("Failed to save profile", err);
+    } finally {
+      setIsSaving(false);
     }
   };
 
@@ -120,14 +147,31 @@ export default function Dashboard() {
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         
-        {/* Left Column: Profile Card */}
+        {/* Left Column: Profile Card UI */}
         <div className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700 h-fit">
           <div className="flex flex-col items-center text-center">
             <img src={profile.avatar_url} alt={profile.login} className="w-32 h-32 rounded-full border-4 border-gray-50 dark:border-gray-700 mb-4" />
-            <h1 className="text-2xl font-bold text-gray-900 dark:text-white">{profile.name || profile.login}</h1>
+            <h1 className="text-2xl font-bold text-gray-900 dark:text-white mt-2">{profile.name || profile.login}</h1>
             <a href={profile.html_url} target="_blank" rel="noreferrer" className="text-blue-500 hover:underline mb-4">
               @{profile.login}
             </a>
+
+            {/* Save Profile Button */}
+            {isAuthenticated && (
+              <button 
+                onClick={handleSaveProfile}
+                disabled={isAlreadySaved || isSaving}
+                className={`mb-4 flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
+                  isAlreadySaved 
+                    ? 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400' 
+                    : 'bg-gray-100 hover:bg-gray-200 text-gray-700 dark:bg-gray-700 dark:hover:bg-gray-600 dark:text-gray-200'
+                }`}
+              >
+                <Bookmark className={`w-4 h-4 ${isAlreadySaved ? 'fill-current' : ''}`} />
+                {isSaving ? 'Saving...' : isAlreadySaved ? 'Saved to Favorites' : 'Save Profile'}
+              </button>
+            )}
+
             {profile.bio && <p className="text-sm text-gray-600 dark:text-gray-300 mb-6">{profile.bio}</p>}
             
             <div className="flex justify-center gap-6 w-full py-4 border-t border-b border-gray-100 dark:border-gray-700 mb-6">
@@ -163,7 +207,7 @@ export default function Dashboard() {
               {!hasRequestedAi && !aiInsight && (
                 <button 
                   onClick={handleGenerateAi}
-                  className="px-4 py-1.5 text-sm font-medium bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors flex items-center gap-2"
+                  className="px-4 py-1.5 text-sm font-medium bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors flex items-center gap-2 cursor-pointer"
                 >
                   <Sparkles className="w-4 h-4" /> Generate
                 </button>
@@ -204,7 +248,6 @@ export default function Dashboard() {
                           <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
                         ))}
                       </Pie>
-                      {/* Tooltip now correctly shows the calculated percentage */}
                       <Tooltip formatter={(value, name, props) => [`${props.payload.percentage}%`, name]} />
                     </PieChart>
                   </ResponsiveContainer>
