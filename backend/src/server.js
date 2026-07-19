@@ -14,7 +14,7 @@ const PORT = process.env.PORT || 5000;
 
 // Middleware
 app.use(cors({
-  origin: 'https://devboard.vercel.app', 
+  origin: 'https://devboard-sigma.vercel.app', 
   credentials: true
 }));
 app.use(express.json());
