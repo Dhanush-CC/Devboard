@@ -255,11 +255,13 @@ export default function Dashboard() {
                         paddingAngle={5}
                         dataKey="value"
                       >
-                        {chartData.map((entry, index) => (
+                        {/* TypeScript fix applied below: changed 'entry' to '_' */}
+                        {chartData.map((_, index) => (
                           <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
                         ))}
                       </Pie>
-                      <Tooltip formatter={(value, name, props) => [`${props.payload.percentage}%`, name]} />
+                      {/* TypeScript fix applied below: changed 'value' to '_value' */}
+                      <Tooltip formatter={(_value, name, props) => [`${props.payload.percentage}%`, name]} />
                     </PieChart>
                   </ResponsiveContainer>
                   <div className="flex flex-wrap justify-center gap-3 mt-2">
