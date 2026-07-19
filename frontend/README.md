@@ -1,75 +1,50 @@
-# React + TypeScript + Vite
+# DevBoard 🚀
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+DevBoard is a full-stack, enterprise-grade developer dashboard built with the MERN stack. It allows users to search for GitHub profiles, visualize their coding habits, generate AI-powered insights, and compare developers side-by-side. 
 
-Currently, two official plugins are available:
+**Live Demo:** [Insert Your Vercel URL Here]
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## ✨ Features
 
-## React Compiler
+* **Real-Time Data Visualization:** Integrates with the GitHub API to fetch user data, repositories, and languages, visualizing them using dynamic `Recharts` (Pie and Bar charts).
+* **AI-Powered Insights:** Leverages Google's Gemini AI to analyze a developer's tech stack and generate a comprehensive technical summary.
+* **Side-by-Side Comparison:** A dedicated comparison tool that concurrently fetches multiple profiles and graphs their statistics head-to-head.
+* **Secure Authentication:** Complete custom auth system using JSON Web Tokens (JWT) and bcrypt password hashing.
+* **Persistent Bookmarking:** Logged-in users can save and remove favorite developer profiles to their personalized dashboard.
+* **Smart Theming:** Fully integrated Light/Dark mode with local-storage persistence and zero-flash loading.
+* **Enterprise-Ready Architecture:** Designed with isolated contexts, strict TypeScript typing, and modular routing.
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## 🛠️ Tech Stack
 
-## Expanding the ESLint configuration
+**Frontend:**
+* React (Vite)
+* TypeScript
+* Tailwind CSS
+* React Router DOM
+* Recharts (Data Visualization)
+* Lucide React (Icons)
+* Axios
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+**Backend:**
+* Node.js
+* Express.js
+* MongoDB / Mongoose
+* JSON Web Tokens (JWT)
+* Bcrypt
+* Google Gemini API
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+## 🚀 Getting Started
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+Follow these instructions to get a copy of the project up and running on your local machine.
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+### Prerequisites
+* Node.js installed
+* A MongoDB database (local or MongoDB Atlas)
+* A Google Gemini API Key
 
-```
+### Installation
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
-
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-
-```
+1. **Clone the repository**
+   ```bash
+   git clone [https://github.com/yourusername/devboard.git](https://github.com/yourusername/devboard.git)
+   cd devboard
